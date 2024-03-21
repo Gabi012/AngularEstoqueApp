@@ -3,8 +3,8 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { SignUpUserResponse } from 'src/app/models/interface/user/SignUpUserResponse';
-import { SignUpUserRequest } from 'src/app/models/interface/user/SignupUser';
-import { AuthRequest } from 'src/app/models/interface/user/auth/authRequest';
+import { SignUpUserRequest } from 'src/app/models/interface/user/SignUpUserRequest';
+import { AuthRequest } from 'src/app/models/interface/user/auth/AuthRequest';
 import { enviroment } from 'src/enviroments/enviroment';
 
 @Injectable({
