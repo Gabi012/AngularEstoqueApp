@@ -14,6 +14,7 @@ import {ButtonModule} from 'primeng/button'
 import {ToastModule} from 'primeng/toast'
 import {CookieService} from 'ngx-cookie-service';
 import { MessageService } from 'primeng/api';
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -29,6 +30,7 @@ import { MessageService } from 'primeng/api';
     InputTextModule,
     ButtonModule,
     ToastModule,
+
 
   ],
   providers: [CookieService, MessageService],
