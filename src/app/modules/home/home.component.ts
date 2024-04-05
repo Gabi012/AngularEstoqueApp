@@ -1,9 +1,10 @@
 import { UserService } from './../../services/user/user.service';
-import { Component } from '@angular/core';
+import { Component, OnDestroy } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { CookieService } from 'ngx-cookie-service';
 import { MessageService } from 'primeng/api';
+import { Subject, takeUntil } from 'rxjs';
 
 import { SignUpUserRequest } from 'src/app/models/interface/user/SignUpUserRequest';
 import { AuthRequest } from 'src/app/models/interface/user/auth/AuthRequest';
@@ -13,7 +14,8 @@ import { AuthRequest } from 'src/app/models/interface/user/auth/AuthRequest';
   templateUrl: './home.component.html',
   styleUrls: ['./home.component.scss']
 })
-export class HomeComponent {
+export class HomeComponent implements OnDestroy{
+  private destroy$ = new Subject<void>();
   loginCard = true
 
   loginForm = this.formBuilder.group({
@@ -30,11 +32,17 @@ export class HomeComponent {
   constructor(private formBuilder: FormBuilder, private userService: UserService, private cookieService: CookieService,
     private messageService: MessageService, private router: Router ){}
 
+
+
   onSubmitLoginForm(): void{
     console.log("submit", this.loginForm.value);
     if(this.loginForm.valid && this.loginForm.value)
     {
-      this.userService.authUser(this.loginForm.value as AuthRequest).subscribe({
+      this.userService.authUser(this.loginForm.value as AuthRequest)
+      .pipe(
+        takeUntil(this.destroy$)
+      )
+      .subscribe({
         next: (respose) =>
         {
           if(respose){
@@ -72,6 +80,9 @@ export class HomeComponent {
     {
       this.userService
       .signUpUser(this.signupForm.value as SignUpUserRequest)
+      .pipe(
+        takeUntil(this.destroy$)
+      )
       .subscribe({
         next:(response)=>{
         if(response) {
@@ -101,5 +112,9 @@ export class HomeComponent {
 
   }
 
+}
+ngOnDestroy(): void {
+ this.destroy$.next();
+ this.destroy$.complete();
 }
 }
